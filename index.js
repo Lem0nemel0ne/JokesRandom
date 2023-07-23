@@ -1,15 +1,20 @@
 const jokeContainer = document.getElementById("joke");
 const btn = document.getElementById("btn");
-const url = "https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&type=single";
+const url = "https://api.chucknorris.io/jokes/random";
 
 let getJoke = () => {
     jokeContainer.classList.remove("fade");
     fetch(url)
-    .then(data => data.json())
-    .then(item =>{
-        jokeContainer.textContent = `${item.joke}`;
+    .then(response => response.json())
+    .then(data => {
+        jokeContainer.textContent = data.value;
+        jokeContainer.classList.add("fade");
+    })
+    .catch(error => {
+        console.error("Error fetching joke:", error);
+        jokeContainer.textContent = "Error fetching joke. Please try again later.";
         jokeContainer.classList.add("fade");
     });
-}
-btn.addEventListener("click",getJoke);
-getJoke();
+};
+
+btn.addEventListener("click", getJoke);
